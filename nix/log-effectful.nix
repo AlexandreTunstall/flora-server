@@ -19,6 +19,7 @@ mkDerivation {
     aeson base effectful effectful-core log-base tasty tasty-hunit text
     time-effectful
   ];
+  jailbreak = true;
   homepage = "https://github.com/haskell-effectful/log-effectful#readme";
   license = lib.licenses.bsd3;
 }

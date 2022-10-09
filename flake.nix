@@ -11,10 +11,11 @@
 
         config = { allowBroken = true; allowUnsupportedSystem = true; };
 
+        hsLib = pkgs.haskell.lib.compose;
+
         overlay = pkgsNew: pkgsOld: {
-          flora =
-            pkgsNew.haskell.lib.justStaticExecutables
-              pkgsNew.haskellPackages.flora;
+          flora = hsLib.addBuildTools [ pkgs.souffle ]
+            (hsLib.justStaticExecutables pkgsNew.haskellPackages.flora);
 
           haskell =
             pkgsOld.haskell // {
@@ -32,7 +33,34 @@
                             directory = ./nix;
                           })
                           (haskellPackagesNew: haskellPackagesOld: {
+                            conduit-extra = hsLib.dontCheck haskellPackagesOld.conduit-extra;
+                            lucid-alpine = hsLib.doJailbreak haskellPackagesOld.lucid-alpine;
+                            lucid-aria = hsLib.doJailbreak haskellPackagesOld.lucid-aria;
+                            lucid-svg = hsLib.doJailbreak haskellPackagesOld.lucid-svg;
+                            microlens-platform = hsLib.doJailbreak haskellPackagesOld.microlens-platform;
+                            postgresql-migration = hsLib.doJailbreak haskellPackagesOld.postgresql-migration;
+                            postgresql-simple-migration = hsLib.doJailbreak haskellPackagesOld.postgresql-simple-migration;
+                            pg-entity = hsLib.dontCheck haskellPackagesOld.pg-entity;
+                            pg-transact = hsLib.dontCheck haskellPackagesOld.pg-transact;
+                            prometheus-proc = hsLib.doJailbreak haskellPackagesOld.prometheus-proc;
+                            raven-haskell = hsLib.dontCheck (hsLib.doJailbreak haskellPackagesOld.raven-haskell);
+                            servant-lucid = hsLib.doJailbreak haskellPackagesOld.servant-lucid;
+                            servant-static-th = hsLib.dontCheck haskellPackagesOld.servant-static-th;
+                            slugify = hsLib.dontCheck haskellPackagesOld.slugify;
+                            souffle-haskell = hsLib.dontCheck (hsLib.doJailbreak haskellPackagesOld.souffle-haskell);
+                            text-metrics = hsLib.doJailbreak haskellPackagesOld.text-metrics;
+                            type-errors-pretty = hsLib.dontCheck (hsLib.doJailbreak haskellPackagesOld.type-errors-pretty);
+
+                            flora = hsLib.addBuildTool pkgsNew.souffle
+                              (hsLib.dontCheck (hsLib.doJailbreak haskellPackagesOld.flora));
+
+                            Cabal-syntax = haskellPackagesNew.Cabal-syntax_3_8_1_0;
+
                             text = haskellPackagesNew.text_2_0_1;
+
+                            lens-aeson = haskellPackagesNew.lens-aeson_1_2_2;
+                            
+                            monad-time = haskellPackagesNew.monad-time_0_4_0_0;
 
                             parsec = haskellPackagesNew.parsec_3_1_15_1;
 
@@ -57,7 +85,15 @@
             program = "${pkgs.flora}/bin/flora";
           };
 
-          devShells.default = pkgs.haskell.packages."${compiler}".flora.env;
+          devShells.default = pkgs.haskell.packages."${compiler}".flora.env.overrideAttrs (old: {
+            buildInputs = old.buildInputs ++ [
+              pkgs.cabal-install
+              pkgs.gnumake
+              pkgs.postgresql
+              pkgs.haskell.packages."${compiler}".postgresql-migration
+              pkgs.yarn
+            ];
+          });
         }
     );
 }

@@ -9,6 +9,7 @@ mkDerivation {
     fetchSubmodules = true;
   };
   libraryHaskellDepends = [ base http-types wai ];
+  jailbreak = true;
   description = "Heartbeat middleware for the WAI ecosystem";
   license = lib.licenses.mit;
 }

@@ -66,7 +66,7 @@ library
   import:          common-ghc-options
   extra-libraries: stdc++
   cxx-options:     -std=c++17 -Wall -D__EMBEDDED_SOUFFLE__
-  cxx-sources:     cbits/categorise.cpp
+  -- cxx-sources:     cbits/categorise.cpp
 
   -- pkgconfig-depends: libpq -any
   hs-source-dirs:  src
@@ -206,7 +206,7 @@ library
     , lucid-aria                 ^>=0.1
     , lucid-svg                  ^>=0.7
     , monad-control              ^>=1.0
-    , monad-time                 ^>=0.3
+    , monad-time                 ^>=0.4
     , mtl                        ^>=2.2
     , odd-jobs
     , optics-core                ^>=0.4

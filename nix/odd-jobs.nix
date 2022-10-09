@@ -1,6 +1,6 @@
 { mkDerivation, aeson, base, bytestring, containers, daemons
 , directory, either, fast-logger, fetchgit, filepath, foreign-store
-, friendly-time, generic-deriving, hedgehog, hostname, hpack, lib
+, friendly-time, generic-deriving, hedgehog, hostname, lib
 , lifted-async, lifted-base, lucid, mmorph, monad-control
 , monad-logger, mtl, optparse-applicative, postgresql-simple
 , random, resource-pool, safe, servant, servant-lucid
@@ -29,7 +29,6 @@ mkDerivation {
     timing-convenience unix unliftio unliftio-core unordered-containers
     wai warp
   ];
-  libraryToolDepends = [ hpack ];
   executableHaskellDepends = [
     aeson base bytestring daemons directory either fast-logger filepath
     foreign-store friendly-time generic-deriving hostname lucid
@@ -50,7 +49,7 @@ mkDerivation {
     unliftio unliftio-core unordered-containers wai warp
   ];
   testToolDepends = [ tasty-discover ];
-  prePatch = "hpack";
+  doCheck = false;
   homepage = "https://www.haskelltutorials.com/odd-jobs";
   description = "A full-featured PostgreSQL-backed job queue (with an admin UI)";
   license = lib.licenses.bsd3;

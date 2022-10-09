@@ -13,6 +13,7 @@ mkDerivation {
   libraryHaskellDepends = [
     base effectful-core mtl pg-transact postgresql-simple resource-pool
   ];
+  jailbreak = true;
   homepage = "https://github.com/kleidukos/pg-transact-effectful/";
   license = lib.licenses.mit;
 }
